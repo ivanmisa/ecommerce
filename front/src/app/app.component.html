@@ -1,0 +1,115 @@
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel" *ngIf="!identity">Crea una cuenta!</h5>
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel" *ngIf="identity">Hola! {{ identity.name}}</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">    
+        <ul>
+            <li data-bs-dismiss="offcanvas" [routerLink]="['/home']">Inicio</li>
+            <li data-bs-dismiss="offcanvas" (click)="openModal('signup')" *ngIf="!identity">Registrarse</li>
+            <li data-bs-dismiss="offcanvas" (click)="openModal('login')" *ngIf="!identity">Iniciar sesion</li>
+            <li data-bs-dismiss="offcanvas" [routerLink]="['/create-product']">Crear Producto</li>
+            <li data-bs-dismiss="offcanvas" style="margin-top: 20px;" (click)="logout()">Cerrar sesion</li>
+        </ul>
+    </div>
+</div>
+<div data-bs-toggle="modal" data-bs-target="#openLogin" #modalogin></div>
+<div data-bs-toggle="modal" data-bs-target="#openSignUp" #modalsignup></div>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="d-flex search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-dark"><i class="fa-solid fa-cart-shopping" style="color: white;"></i></button>
+          </form>
+    </div>
+</nav>
+
+<!-- Modal Iniciar sesion -->
+<div class="modal fade" id="openLogin" tabindex="-1" aria-labelledby="signinModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">   
+                    <div></div>                         
+                    <h4 class="modal-title">Inicia sesion</h4>
+                    <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button></div>      
+            </div>
+            <div class="modal-body">
+                <form #loginForm="ngForm"  class="needs-validation" id="form-login" (ngSubmit)="formValidation(loginForm, 'loginForm')" novalidate>
+                    <div class="fields">
+                        <div>                  
+                            <div class="form-floating mb-3">
+                                <input type="email"  placeholder=" " id="validationCustom01" class="form-control" name="email" #email="ngModel" [(ngModel)]="user.email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" required>
+                                <label for="validationCustom01">Correo electronico</label>
+                            </div>
+                        </div>
+                        <br/>
+                        <div>                                     
+                            <div class="form-floating mb-3">
+                                <input type="email"  placeholder=" " id="validationCustom02" class="form-control" type="password" id="validationCustom02" name="password" #password="ngModel" [(ngModel)]="user.password" class="form-control" pattern="(?=.*[A-Za-z])(?=.*[0-9]).{8,}" required>
+                                <label for="validationCustom02">Contraseña</label>
+                            </div>
+                        </div>                    
+                    </div>             
+                    <div class="d-flex justify-content-center">
+                        <input class="submit btn btn-primary" value="Iniciar sesion" type="submit"/>
+                    </div>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+  
+  <!-- Modal Registro -->
+<div class="modal fade" id="openSignUp" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">   
+                <div></div>                         
+                <h4 class="modal-title">Crear cuenta</h4>
+                <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button></div>  
+            </div>
+            <div class="modal-body">
+                <form #registerForm="ngForm" id="form-signup" class="needs-validation" (ngSubmit)="formValidation(registerForm, 'signupForm')" novalidate>
+                    <div class="fields">
+                        <div class="row">
+                            <div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" id="validationCustom01" name="name" placeholder=" " class="form-control" #name="ngModel" [(ngModel)]="user.name"  minlength="2" maxlength="25" required>
+                                    <label for="validationCustom01">Nombre</label>
+                                </div>
+                            </div>                   
+                        </div>    
+                        <br/>        
+                        <div>
+                            <div class="form-floating mb-3">
+                                <input type="email" id="validationCustom02" placeholder=" " class="form-control" name="email" #email="ngModel" [(ngModel)]="user.email" required pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" required />
+                                <label for="validationCustom02">Correo electronico</label>
+                            </div>                      
+                        </div>
+                        <br/>  
+                        <div>
+                            <div class="form-floating mb-3">
+                                <input type="password" id="validationCustom03" name="password" placeholder=" " #password="ngModel" [(ngModel)]="user.password" class="form-control" pattern="(?=.*[A-Za-z])(?=.*[0-9]).{8,}" required/>
+                                <label for="validationCustom03">Contraseña</label>
+                            </div>                                  
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <input class="submit btn btn-primary" value="Registrar!" type="submit"/>
+                    </div>   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<router-outlet></router-outlet>

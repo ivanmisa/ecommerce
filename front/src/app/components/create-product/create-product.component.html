@@ -1,0 +1,129 @@
+<div class="container">
+    <div class="body-form">
+        <div class="d-flex justify-content-center m-4">
+            <h2>Crea nuevo producto</h2>
+        </div>
+        <form #productForm="ngForm" class="needs-validation" id="product" (ngSubmit)="formValidation(productForm)" novalidate>
+            <div class="fields row">
+                <div class="col-md-6">
+                    <div class="container-field">
+                        <label for="name1" class="form-label">Nombre del producto</label>
+                        <input type="text" class="form-control" id="name1" maxlength="20" minlength="4" placeholder="Nombre" name="name" #name="ngModel" [(ngModel)]="product.name" required>
+                    </div>
+                    <div class="container-field">
+                        <label for="category1" class="form-label">Categoria del producto</label>
+                        <select class="form-select form-control" id="category1"  name="category" #category="ngModel" [(ngModel)]="product.category" required>
+                            <option value="pants">Pantalon</option>
+                            <option value="dress">Vestido</option>
+                            <option value="shirts">Camisa</option>
+                            <option value="shoes">Zapatos</option>
+                            <option value="sneakers">Tenis</option>
+                            <option value="tshirt">Playera</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="container-field">
+                        <label for="gender1" class="form-label" >Genero</label>
+                        <select class="form-select form-control" id="gender1" name="gender" #gender="ngModel" [(ngModel)]="product.gender" required>
+                            <option value="men">Hombre</option>
+                            <option value="women">Mujer</option>
+                            <option value="unisex">Unisex</option>
+                        </select>
+                    </div>
+                    <div class="container-field">
+                        <label for="price1" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="price1" placeholder="Precio por producto" name="price" #price="ngModel" [(ngModel)]="product.price" required>
+                    </div>
+                </div>
+            </div>
+            <div class="container-field">
+                <label for="description1" class="form-label" >Descripcion del producto</label>
+                <textarea type="textarea" class="form-control" id="description1" placeholder="Descripcion del producto" row="3" maxlength="70" name="description" #description="ngModel" [(ngModel)]="product.description" required></textarea>
+            </div>
+           
+            <div class="container-field p-5">
+                <div *ngIf="!product.color[0]" class="d-flex justify-content-center">
+                    <h5>Agrega un color!</h5>
+                </div>
+                <div *ngIf="product.color[0]">
+                    <div *ngFor="let type of product.color" class="d-flex justify-content-center">
+                        <div class="color-container" [ngStyle]="{'background': type.color}"></div>
+                        <div style="margin-left:15px">
+                            {{type.number}} - <span *ngIf="type.number == 1">Producto</span> <span *ngIf="type.number > 1">Productos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center m-4" *ngIf="product.color.length < 5">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#openColorModal">Agregar colores y cantidad disponible</button>
+                </div>
+            </div>
+           
+
+            <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                <h4>Sube las imagenes</h4>
+            </div>
+            <div class="container-images flex-wrap d-flex justify-content-center">
+                <div *ngFor="let array of arrayImages; let i=index">
+                    <div class="column" >
+                        <div type="button" class="closer" (click)="removefile(i)"><i class="fas fa-times"></i></div> 
+                        <div class="morePhoto" *ngIf="(!product.file[0]) && (i == 0)"><span>Imagen principal</span></div>
+                        <img [src]="array" > <br/>
+                    </div>        
+                </div>
+                <div class="input-upload" *ngIf="urls.length < 3">
+                    <input type='file' accept="image/*" class="d-none" (change)="onSelectFile($event)" #upload multiple>
+                    <div class="add-image" (click)="upload.click()"><i class="fas fa-plus-circle"></i></div>
+                </div>
+                <div class="non-images" *ngIf="!urls.length">
+                    <span>Haz click en el boton para seleccionar las imagenes</span>
+                    <i class="far fa-images" style="margin-left:6px ;"></i>
+                </div>
+                <div class="limit-images" *ngIf="urls.length  >= 3">
+                    <span>Llegaste al limite de imagenes</span>
+                    <i class="far fa-images" style="margin-left:6px ;"></i>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center m-5">
+                <button class="btn btn-success" type="submit" [disabled]="urls.length < 2 || !product.color[0]">Crear producto</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Color -->
+<div class="modal fade" id="openColorModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">   
+                <div></div>                         
+                <h4 class="modal-title">Agregar colores y cantidad</h4>
+                <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button></div>  
+            </div>
+            <div class="modal-body d-flex justify-content-center">
+                <form>                 
+                    <div class="container-field">
+                        <label for="color1" class="m-3">Color</label>
+                        <input type="color" for="color1" name="color" [(ngModel)]="color"/>
+                    </div>
+                    <div class="container-field">
+                        <label for="number1" class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="number1" placeholder="Cantidad" name="number" [(ngModel)]="number">
+                    </div>
+                    <div class="d-flex justify-content-center m-3">
+                        <button type="button" class="btn btn-success" (click)="addColor()" [disabled]="(!color) || (number < 1)" data-bs-dismiss="modal">Agregar</button>
+                    </div>             
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-load" *ngIf="load != false">
+    <div class="load">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span>Cargando..</span>
+    </div>
+</div>

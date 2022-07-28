@@ -1,0 +1,86 @@
+<div class="body">
+    <div class="container">
+        <div class="image-background">
+            <img [src]="'assets/back.jpg'" />
+        </div>
+        <h2><span *ngIf="gender == 'all'">Todo</span>
+            <span *ngIf="gender == 'men'">Hombre</span>
+            <span *ngIf="gender == 'women'">Mujer</span>
+            <span *ngIf="gender == 'unisex'">Unisex</span>
+           ( {{products.length}} )
+        </h2>
+        <div class="conteiner-category justify-content-center d-flex flex-wrap">
+            <div class="category justify-content-center">
+                <input class="form-check-input"  type="radio" id="all" value="all" name="gender" [(ngModel)]="gender" (change)="changeGender()">     
+                <label for="all" class="form-check-label"><i class="fa-solid fa-earth-americas" style="display: block; font-size: 24px;"></i>Todo
+                </label>
+            </div>           
+
+            <div class="category justify-content-center">
+                <input class="form-check-input" type="radio" id="men" value="men" name="gender" [(ngModel)]="gender" (change)="changeGender()">     
+                <label for="men" class="form-check-label"><i class="fa-solid fa-person" style="display: block; font-size: 24px;"></i>Hombre
+                </label>
+            </div>
+             
+            <div class="category justify-content-center">
+                <input class="form-check-input" type="radio" id="women" value="women" name="gender" [(ngModel)]="gender" (change)="changeGender()">     
+                <label for="women" class="form-check-label"><i class="fa-solid fa-person-dress" style="display: block; font-size: 24px;"></i>Mujer
+                </label>
+            </div>
+
+            <div class="category justify-content-center">
+                <input class="form-check-input" type="radio" id="unisex" value="unisex" name="gender" [(ngModel)]="gender" (change)="changeGender()">     
+                <label for="unisex" class="form-check-label"><i class="fa-solid fa-people-arrows" style="display: block; font-size: 24px;"></i>Unisex
+                </label>      
+            </div>         
+        </div>
+
+        <div *ngIf="!products[0]">
+            No hay productos disponibles
+        </div>
+
+        <div *ngIf="products[0]" class="d-flex justify-content-center flex-wrap">      
+            <div *ngFor="let product of products" class="container-product m-3">
+                <div *ngIf="product.file[0]" class="container-image">
+                    <div class="like">
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+                    <img src="{{ product.file[0].secure_url }}">
+                </div>
+                <div class="data-product p-3">
+                    <div class="row primary">
+                        <div class="col-8">
+                            <div>
+                                <h5>{{product.name | slice:0:17}}</h5>
+                            </div>
+                            <div class="description">
+                                {{product.description | slice:0:30}}<span *ngIf="product.description.length > 30">..</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div>
+                                <h5>${{product.price}}</h5>
+                            </div>
+                            <div class="gender">
+                                <div *ngIf="product.gender == 'men'">Hombre</div>
+                                <div *ngIf="product.gender == 'women'">Mujer</div>
+                                <div *ngIf="product.gender == 'unisex'">Unisex</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-around p-3">
+                            <div *ngIf="product.color[0]"  class="d-flex align-self-center">
+                                <div *ngFor="let color of product.color">
+                                    <div class="color-container" [ngStyle]="{'background': color.color}"></div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-dark" style="font-weight: 600;">Agregar <i class="fa-solid fa-plus m-1"></i></button>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
